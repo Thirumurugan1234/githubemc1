@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Validation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .form-container {
+    
+    padding: 20px 50px;
+
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-container h2 {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="password"],
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+  }
+
+  .form-group button {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .form-group button:hover {
+    background-color: #45a049;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>Registration Form</h2>
+  <form id="myForm">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Enter your username">
+      <div id="usernameError" class="error"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email">
+      <div id="emailError" class="error"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password">
+      <div id="passwordError" class="error"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" placeholder="Confirm your password">
+      <div id="confirmPasswordError" class="error"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <select id="gender">
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <div id="genderError" class="error"></div>
+    </div>
+    
+    <div class="form-group">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+
+<script>
+document.getElementById('myForm').addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent form submission
+
+  // Reset error messages
+  document.getElementById('usernameError').innerText = '';
+  document.getElementById('emailError').innerText = '';
+  document.getElementById('passwordError').innerText = '';
+  document.getElementById('confirmPasswordError').innerText = '';
+  document.getElementById('genderError').innerText = '';
+
+  // Get form values
+  var username = document.getElementById('username').value;
+  var email = document.getElementById('email').value;
+  var password = document.getElementById('password').value;
+  var confirmPassword = document.getElementById('confirmPassword').value;
+  var gender = document.getElementById('gender').value;
+
+  // Validate username
+  if (username.trim() === '') {
+    document.getElementById('usernameError').innerText = 'Username is required';
+    document.getElementById('username').focus();
+    return false;
+  }
+
+  // Validate email
+  if (!validateEmail(email)) {
+    document.getElementById('emailError').innerText = 'Please enter a valid email address';
+    document.getElementById('email').focus();
+    return false;
+  }
+
+  // Validate password
+  if (!validatePassword(password)) {
+    document.getElementById('passwordError').innerText = 'Password must be at least 8 characters long and start with a capital letter';
+    document.getElementById('password').focus();
+    return false;
+  }
+
+  // Validate confirm password
+  if (confirmPassword.trim() === '') {
+    document.getElementById('confirmPasswordError').innerText = 'Please confirm password';
+    document.getElementById('confirmPassword').focus();
+    return false;
+  }
+
+  // Check if password and confirm password match
+  if (password !== confirmPassword) {
+    document.getElementById('confirmPasswordError').innerText = 'Passwords do not match';
+    document.getElementById('confirmPassword').focus();
+    return false;
+  }
+
+  // Validate gender
+  if (gender === '') {
+    document.getElementById('genderError').innerText = 'Please select your gender';
+    document.getElementById('gender').focus();
+    return false;
+  }
+
+  // If everything is valid, you can proceed with form submission
+  // For demonstration purposes, let's just log the form values
+  console.log('Username:', username);
+  console.log('Email:', email);
+  console.log('Password:', password);
+  console.log('Gender:', gender);
+});
+
+function validateEmail(email) {
+  // Regular expression for email validation
+  var re = /\S+@\S+\.\S+/;
+  return re.test(email);
+}
+
+function validatePassword(password) {
+  // Password must be at least 8 characters long and start with a capital letter
+  var re = /^(?=.*[A-Z]).{8,}$/;
+  return re.test(password);
+}
+</script>
+
+</body>
+</html>
